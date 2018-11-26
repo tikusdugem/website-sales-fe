@@ -46,7 +46,7 @@ export default {
 
             this.$store.dispatch("submitLogin", data)
                 .then((res) => {
-                    if(res.Status === "1") {
+                    if(res.status === 1) {
                         $("#loginModal").on("shown.bs.modal", function (e) {
                             const modal = $(this);
                             modal.find(".modal-body p").text("Congrats! You successful login!");
