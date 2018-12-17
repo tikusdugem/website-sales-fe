@@ -31,6 +31,17 @@ export default new Vuex.Store({
             reject(err);
           });
       });
+    },
+    listingUsers(context, data) {
+      return new Promise((resolve, reject) => {
+        axios.get("http://localhost:2000/user/all")
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
     }
   }
 })

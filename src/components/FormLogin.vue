@@ -47,6 +47,7 @@ export default {
             this.$store.dispatch("submitLogin", data)
                 .then((res) => {
                     if(res.status === 1) {
+                        this.$router.push("/users");
                         $("#loginModal").on("shown.bs.modal", function (e) {
                             const modal = $(this);
                             modal.find(".modal-body p").text("Congrats! You successful login!");
