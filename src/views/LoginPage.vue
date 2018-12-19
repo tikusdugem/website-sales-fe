@@ -1,16 +1,16 @@
 <template>
     <div>
-        <FormLogin></FormLogin>
+        <TheFormLogin></TheFormLogin>
     </div>
 </template>
 
 <script>
-import FormLogin from "@/components/FormLogin.vue"
+import TheFormLogin from "@/components/TheFormLogin.vue"
 
 export default {
     name: "LoginPage",
     components: {
-        FormLogin
+        TheFormLogin
     }
 }
 </script>
