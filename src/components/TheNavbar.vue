@@ -7,6 +7,14 @@
                 <v-btn to="/home" exact flat>Home</v-btn>
                 <v-btn to="/users" exact flat>Users Management</v-btn>
             </v-toolbar-items>
+            <v-toolbar-items class="hidden-lg-and-up ml-2">
+                <v-btn to="/home" exact icon>
+                    <v-icon>home</v-icon>
+                </v-btn>
+                <v-btn to="/users" exact icon>
+                    <v-icon>people</v-icon>
+                </v-btn>
+            </v-toolbar-items>
             <v-spacer></v-spacer>
             <v-btn depressed color="error">Logout</v-btn>
         </v-toolbar>
