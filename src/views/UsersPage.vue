@@ -10,6 +10,7 @@ import TheNavbar from "@/components/TheNavbar.vue"
 import TheUsersTable from "@/components/TheUsersTable.vue"
 
 export default {
+    name: "UsersPage",
     components: {
         TheNavbar,
         TheUsersTable
