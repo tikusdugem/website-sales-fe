@@ -7,7 +7,7 @@
                 <v-btn to="/home" exact flat>Home</v-btn>
                 <v-btn to="/users" exact flat>Users Management</v-btn>
             </v-toolbar-items>
-            <v-toolbar-items class="hidden-lg-and-up ml-2">
+            <v-toolbar-items class="hidden-md-and-up ml-2">
                 <v-btn to="/home" exact icon>
                     <v-icon>home</v-icon>
                 </v-btn>
