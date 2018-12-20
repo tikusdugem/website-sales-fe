@@ -1,12 +1,8 @@
 <template>
     <v-app>
-        <div>
-            <v-container fluid>
-                <v-alert v-model="isAlert" type="error" transition="fade-transition" outline dismissible>
-                    Wrong Username or Password, maybe :)
-                </v-alert>
-            </v-container>
-        </div>
+        <v-alert v-model="isAlert" type="error" transition="fade-transition" outline dismissible>
+            Wrong Username or Password, maybe :)
+        </v-alert>
         <v-dialog hide-overlay persistent width="300" v-if="isLoading" v-model="isLoading">
             <v-card color="primary" dark>
                 <v-card-text>
