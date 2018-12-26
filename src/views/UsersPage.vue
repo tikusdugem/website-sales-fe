@@ -43,7 +43,7 @@
                     </v-card>
                 </v-dialog>
             </v-toolbar>
-            <v-data-table :headers="headers" :items="users" :search="search" :loading="isLoading" class="elevation-1">
+            <v-data-table :headers="headers" :items="users" :pagination.sync="pagination" :total-items="totalUsers" :loading="isLoading" class="elevation-1">
                 <template slot="items" slot-scope="props">
                     <td>{{ props.item.name }}</td>
                     <td>{{ props.item.username }}</td>
@@ -72,8 +72,12 @@ export default {
     components: {
         TheNavbar
     },
-    created() {
-        this.init();
+    mounted () {
+        this.getDataFromApi()
+            .then(data => {
+                this.users = data.items
+                this.totalUsers = data.total
+            })
     },
     data() {
         return {
@@ -98,7 +102,9 @@ export default {
             },
             search: "",
             toggleSearch: false,
-            isLoading: false
+            isLoading: false,
+            totalUsers: 0,
+            pagination: {}
         }
     },
     computed: {
@@ -106,9 +112,21 @@ export default {
             return this.editedIndex === -1 ? "New User" : "Edit User";
         }
     },
+    watch: {
+        pagination: {
+            handler () {
+                this.getDataFromApi()
+                    .then(data => {
+                        this.users = data.items
+                        this.totalUsers = data.total
+                    })
+            },
+            deep: true
+        }
+    },
     methods: {
         init() {
-            this.users = [
+            return [
                 {
                     value: false,
                     name: 'Nakya Santini',
@@ -126,8 +144,64 @@ export default {
                     name: 'Kirun',
                     username: "Kiruners",
                     password: "therehello",
+                },
+                {
+                    value: false,
+                    name: 'Fallyra',
+                    username: "Fal",
+                    password: "Lyra",
+                },
+                {
+                    value: false,
+                    name: 'Legita',
+                    username: "Leg",
+                    password: "Ita",
+                },
+                {
+                    value: false,
+                    name: 'Dexter',
+                    username: "Dexs",
+                    password: "Ters",
                 }
             ]
+        },
+        getDataFromApi () {
+            this.isLoading = true
+            return new Promise((resolve, reject) => {
+                const { sortBy, descending, page, rowsPerPage } = this.pagination
+
+                let items = this.init()
+                const total = items.length
+
+                if (this.pagination.sortBy) {
+                    items = items.sort((a, b) => {
+                        const sortA = a[sortBy]
+                        const sortB = b[sortBy]
+
+                        if (descending) {
+                            if (sortA < sortB) return 1
+                            if (sortA > sortB) return -1
+                            return 0
+                        } else {
+                            if (sortA < sortB) return -1
+                            if (sortA > sortB) return 1
+                            return 0
+                        }
+                    })
+                }
+
+                if (rowsPerPage > 0) {
+                    items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+                }
+
+                setTimeout(() => {
+                    this.isLoading = false
+                    resolve({
+                        items,
+                        total
+                    })
+                }, 1000)
+            })
         },
         close() {
             this.dialog = false;
