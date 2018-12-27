@@ -4,7 +4,6 @@
         <v-container fluid>
             <v-toolbar flat color="white" class="elevation-1">
                 <v-toolbar-title>User Management</v-toolbar-title>
-                <v-divider class="mx-2" inset vertical></v-divider>
                 <v-spacer></v-spacer>
                 <v-flex xs12 sm6 md3>
                     <v-text-field v-if="toggleSearch" v-model="search" label="Search" hide-details clearable color="primary" class="mb-2"></v-text-field>
@@ -122,6 +121,16 @@ export default {
                     })
             },
             deep: true
+        },
+        search: {
+            handler() {
+                this.getDataFromApi()
+                    .then(data => {
+                        this.users = data.items
+                        this.totalUsers = data.total
+                    })
+            },
+            deep: true
         }
     },
     methods: {
@@ -171,6 +180,7 @@ export default {
                 const { sortBy, descending, page, rowsPerPage } = this.pagination
 
                 let items = this.init()
+                items = items.filter(i => i.name.toLowerCase().startsWith(this.search))
                 const total = items.length
 
                 if (this.pagination.sortBy) {
