@@ -181,7 +181,7 @@ export default {
 
                 let items = this.init()
                 items = items.filter(i => i.name.toLowerCase().startsWith(this.search))
-                const total = items.length
+                let total = items.length
 
                 if (this.pagination.sortBy) {
                     items = items.sort((a, b) => {
@@ -202,6 +202,10 @@ export default {
 
                 if (rowsPerPage > 0) {
                     items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+                }
+
+                if(this.search && total === 0) {
+                    total = -1;
                 }
 
                 setTimeout(() => {
