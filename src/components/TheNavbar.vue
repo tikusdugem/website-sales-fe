@@ -15,6 +15,35 @@
             </v-btn>
         </v-toolbar-items>
         <v-spacer></v-spacer>
-        <v-btn depressed color="error">Logout</v-btn>
+        <v-btn depressed color="error" @click="logout">Logout</v-btn>
+        <v-snackbar :value="toggleSnackbar" color="success" :timeout="timeout">
+            {{ textSnackbar }}
+            <v-btn flat @click="toggleSnackbar = false">
+                Close
+            </v-btn>
+        </v-snackbar>
     </v-toolbar>
 </template>
+
+<script>
+export default {
+    name: "TheNavbar",
+    data() {
+        return {
+            toggleSnackbar: false,
+            textSnackbar: "Successfully to logout, thanks!",
+            timeout: 3000
+        }
+    },
+    methods: {
+        logout() {
+            const self = this;
+            this.toggleSnackbar = true;
+
+            setTimeout(() => {
+                self.$router.push("/logout");
+            }, 4000);
+        }
+    }
+}
+</script>

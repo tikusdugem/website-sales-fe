@@ -12,23 +12,28 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'landing page',
+      name: 'LandingPage',
       redirect: "/login"
     },
     {
       path: "/login",
-      name: "login page",
+      name: "LoginPage",
       component: LoginPage
     },
     {
       path: "/home",
-      name: "home page",
+      name: "HomePage",
       component: HomePage
     },
     {
       path: "/users",
-      name: "users page",
+      name: "UsersPage",
       component: UsersPage
+    },
+    {
+      path: "/logout",
+      name: "LogoutPage",
+      redirect: "/login"
     }
   ]
 })

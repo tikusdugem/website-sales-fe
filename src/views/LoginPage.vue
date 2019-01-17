@@ -53,20 +53,27 @@ export default {
     methods: {
         login() {
             const self = this;
+            const data = {
+                username: this.username,
+                password: this.password
+            }
 
             this.isLoading = true;
             this.isAlert = false;
 
-            if(this.username === this.password) {
-                setTimeout(function() {
-                    self.isLoading = false;
-                }, 5000);
-            } else {
-                setTimeout(function() {
-                    self.isLoading = false;
-                    self.isAlert = true;
-                }, 5000);
-            }
+            this.$store.dispatch("submitLogin", data)
+                .then(res => {
+                    if(res.status === 1) {
+                        self.isLoading = false;
+                        self.$router.push("/home");
+                    } else {
+                        self.isLoading = false;
+                        self.isAlert = true;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
         }
     }
 }
