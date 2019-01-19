@@ -134,52 +134,12 @@ export default {
         }
     },
     methods: {
-        init() {
-            return [
-                {
-                    value: false,
-                    name: 'Nakya Santini',
-                    username: "Rothem",
-                    password: "hellothere",
-                },
-                {
-                    value: false,
-                    name: 'Jelly Heramawan',
-                    username: "Jell",
-                    password: "whooopss",
-                },
-                {
-                    value: false,
-                    name: 'Kirun',
-                    username: "Kiruners",
-                    password: "therehello",
-                },
-                {
-                    value: false,
-                    name: 'Fallyra',
-                    username: "Fal",
-                    password: "Lyra",
-                },
-                {
-                    value: false,
-                    name: 'Legita',
-                    username: "Leg",
-                    password: "Ita",
-                },
-                {
-                    value: false,
-                    name: 'Dexter',
-                    username: "Dexs",
-                    password: "Ters",
-                }
-            ]
-        },
         getDataFromApi () {
             this.isLoading = true
-            return new Promise((resolve, reject) => {
+            return new Promise(async (resolve, reject) => {
                 const { sortBy, descending, page, rowsPerPage } = this.pagination
 
-                let items = this.init()
+                let items = await this.$store.dispatch("listingUsers");
                 items = items.filter(i => i.name.toLowerCase().startsWith(this.search))
                 let total = items.length
 

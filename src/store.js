@@ -6,16 +6,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userStatus: {}
+    userStatus: {},
+    usersData: []
   },
   getters: {
     getUserStatus: state => {
       return state.userStatus;
+    },
+    getUsersData: state => {
+      return state.usersData;
     }
   },
   mutations: {
     setUserStatus(state, data) {
       state.userStatus = data;
+    },
+    setUsersData(state, data) {
+      state.usersData = data;
     }
   },
   actions: {
@@ -32,11 +39,12 @@ export default new Vuex.Store({
           });
       });
     },
-    listingUsers(context, data) {
+    listingUsers(context) {
       return new Promise((resolve, reject) => {
         axios.get("http://localhost:2000/user/all")
           .then(res => {
-            resolve(res);
+            context.commit("setUsersData", res.data);
+            resolve(res.data);
           })
           .catch(err => {
             reject(err);
