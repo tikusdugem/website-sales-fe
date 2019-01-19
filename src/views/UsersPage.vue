@@ -60,6 +60,12 @@
                 </v-alert>
             </v-data-table>
         </v-container>
+        <v-snackbar :value="toggleSnackbar" color="success" :timeout="timeout" top>
+            {{ textSnackbar }}
+            <v-btn flat @click="toggleSnackbar = false">
+                Close
+            </v-btn>
+        </v-snackbar>
     </v-app>
 </template>
 
@@ -103,7 +109,10 @@ export default {
             toggleSearch: false,
             isLoading: false,
             totalUsers: 0,
-            pagination: {}
+            pagination: {},
+            toggleSnackbar: false,
+            timeout: 3000,
+            textSnackbar: ""
         }
     },
     computed: {
@@ -182,9 +191,25 @@ export default {
             this.editedItem = Object.assign({}, this.defaultItem);
             this.editedIndex = -1;
         },
-        save() {
-            if(this.editedIndex > -1) Object.assign(this.users[this.editedIndex], this.editedItem);
-                else this.users.push(this.editedItem);
+        async save() {
+            if(this.editedIndex > -1) {
+                Object.assign(this.users[this.editedIndex], this.editedItem);
+            } else {
+                await this.$store.dispatch("addUser", this.editedItem)
+                    .then(res => {
+                        if(res === "Saved!") {
+                            this.textSnackbar = "Successfuly add user!";
+                            this.toggleSnackbar = true;
+                            this.users.push(this.editedItem);
+                        } else {
+                            this.textSnackbar = "Failed add user!";
+                            this.toggleSnackbar = true;
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            }
 
             this.close();
         },

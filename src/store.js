@@ -50,6 +50,17 @@ export default new Vuex.Store({
             reject(err);
           });
       });
+    },
+    addUser(context, data) {
+      return new Promise((resolve, reject) => {
+        axios.get("http://localhost:2000/user/add?name=" + data.name + "&username=" + data.username + "&password=" + data.password)
+          .then(res => {
+            resolve(res.data);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
     }
   }
 })
