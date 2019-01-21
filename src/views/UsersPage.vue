@@ -60,7 +60,7 @@
                 </v-alert>
             </v-data-table>
         </v-container>
-        <v-snackbar :value="toggleSnackbar" color="success" :timeout="timeout" top>
+        <v-snackbar :value="toggleSnackbar" :color="colorSnackbar" :timeout="timeout" top>
             {{ textSnackbar }}
             <v-btn flat @click="toggleSnackbar = false">
                 Close
@@ -110,7 +110,9 @@ export default {
             isLoading: false,
             totalUsers: 0,
             pagination: {},
+
             toggleSnackbar: false,
+            colorSnackbar: "",
             timeout: 3000,
             textSnackbar: ""
         }
@@ -198,12 +200,23 @@ export default {
                 await this.$store.dispatch("addUser", this.editedItem)
                     .then(res => {
                         if(res === "Saved!") {
-                            this.textSnackbar = "Successfuly add user!";
-                            this.toggleSnackbar = true;
-                            this.users.push(this.editedItem);
+                            this.toggleSnackbar = false;
+                            setTimeout(() => {
+                                this.textSnackbar = "Successfuly add user!";
+                                this.colorSnackbar = "success";
+                                this.toggleSnackbar = true;
+                                this.getDataFromApi().then(res => {
+                                    this.users = res.items;
+                                    this.totalUsers = res.total;
+                                });
+                            }, 100);
                         } else {
-                            this.textSnackbar = "Failed add user!";
-                            this.toggleSnackbar = true;
+                            this.toggleSnackbar = false;
+                            setTimeout(() => {
+                                this.textSnackbar = "Failed add user!";
+                                this.colorSnackbar = "error";
+                                this.toggleSnackbar = true;
+                            }, 100);
                         }
                     })
                     .catch(err => {
@@ -219,8 +232,35 @@ export default {
             this.dialog = true;
         },
         deleteItem(item) {
-            const index = this.users.indexOf(item);
-            confirm('Are you sure you want to delete ' + item.name + ' data?') && this.users.splice(index, 1);
+            const answer = confirm('Are you sure you want to delete ' + item.name + ' data?');
+
+            if(answer) {
+                this.$store.dispatch("deleteUser", item.id)
+                    .then(res => {
+                        if(res === "Deleted!") {
+                            this.toggleSnackbar = false;
+                            setTimeout(() => {
+                                this.textSnackbar = "Successfully delete user!";
+                                this.colorSnackbar = "success";
+                                this.toggleSnackbar = true;
+                                this.getDataFromApi().then(res => {
+                                    this.users = res.items
+                                    this.totalUsers = res.total
+                                });
+                            }, 100);
+                        } else {
+                            this.toggleSnackbar = false;
+                            setTimeout(() => {
+                                this.textSnackbar = "Failed delete user!";
+                                this.colorSnackbar = "error"
+                                this.toggleSnackbar = true;
+                            }, 100);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            }
         }
     }
 }

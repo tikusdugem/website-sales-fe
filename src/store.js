@@ -61,6 +61,17 @@ export default new Vuex.Store({
             reject(err);
           });
       });
+    },
+    deleteUser(context, data) {
+      return new Promise((resolve, reject) => {
+        axios.get("http://localhost:2000/user/del?id=" + data)
+          .then(res => {
+            resolve(res.data);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      })
     }
   }
 })
