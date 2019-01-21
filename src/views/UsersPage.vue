@@ -196,7 +196,28 @@ export default {
         },
         async save() {
             if(this.editedIndex > -1) {
-                Object.assign(this.users[this.editedIndex], this.editedItem);
+                await this.$store.dispatch("updateUser", this.editedItem)
+                    .then(res => {
+                        if(res === "Updated") {
+                            this.toggleSnackbar = false;
+                            setTimeout(() => {
+                                this.textSnackbar = "Successfully update user!";
+                                this.colorSnackbar = "success";
+                                this.toggleSnackbar = true;
+                                this.getDataFromApi().then(res => {
+                                    this.users = res.items;
+                                    this.totalUsers = res.total;
+                                });
+                            }, 100);
+                        } else {
+                            this.toggleSnackbar = false;
+                            setTimeout(() => {
+                                this.textSnackbar = "Failed update user!";
+                                this.colorSnackbar = "error";
+                                this.toggleSnackbar = true;
+                            }, 100);
+                        }
+                    })
             } else {
                 await this.$store.dispatch("addUser", this.editedItem)
                     .then(res => {

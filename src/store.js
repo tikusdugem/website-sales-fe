@@ -28,7 +28,7 @@ export default new Vuex.Store({
   actions: {
     submitLogin(context, data) {
       return new Promise((resolve, reject) => {
-        axios.post("http://localhost:2000/login?username=" + data.username + "&password=" + data.password)
+        axios.get("http://localhost:2000/login?username=" + data.username + "&password=" + data.password)
           .then((res) => {
             context.commit("setUserStatus", res.data);
             localStorage.setItem("Status", JSON.stringify(res.data));
@@ -53,7 +53,7 @@ export default new Vuex.Store({
     },
     addUser(context, data) {
       return new Promise((resolve, reject) => {
-        axios.get("http://localhost:2000/user/add?name=" + data.name + "&username=" + data.username + "&password=" + data.password)
+        axios.post("http://localhost:2000/user/add?name=" + data.name + "&username=" + data.username + "&password=" + data.password)
           .then(res => {
             resolve(res.data);
           })
@@ -64,7 +64,18 @@ export default new Vuex.Store({
     },
     deleteUser(context, data) {
       return new Promise((resolve, reject) => {
-        axios.get("http://localhost:2000/user/del?id=" + data)
+        axios.post("http://localhost:2000/user/del?id=" + data)
+          .then(res => {
+            resolve(res.data);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      })
+    },
+    updateUser(context, data) {
+      return new Promise((resolve, reject) => {
+        axios.post("http://localhost:2000/user/update?id=" + data.id + "&name=" + data.name + "&username=" + data.username + "&password=" + data.password)
           .then(res => {
             resolve(res.data);
           })
