@@ -135,6 +135,7 @@ export default {
         },
         search: {
             handler() {
+                this.search === null ? this.search = "" : null;
                 this.getDataFromApi()
                     .then(data => {
                         this.users = data.items
